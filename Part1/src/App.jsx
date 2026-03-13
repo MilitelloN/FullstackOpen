@@ -1,11 +1,5 @@
 import { useState } from 'react'
 
-
-
-
-
-
-
 const App = () => {
   const [goodReview, setGoodReview] = useState(0)
   const [neutralReview, seNeutralReview] = useState(0)
@@ -24,8 +18,7 @@ const App = () => {
     }
   }
 
-
-
+  const total = goodReview + neutralReview + badReview
   return (
     <div>
       <h1>Give feedback</h1>
@@ -36,6 +29,9 @@ const App = () => {
       <p>Good {goodReview}</p>
       <p>Neutral {neutralReview}</p>
       <p>Bad {badReview}</p>
+      <p>All {total}</p>
+      <p>Average {total / 3}</p>
+      <p>Positive {goodReview * 100 / total}%</p>
     </div>
   )
 }
