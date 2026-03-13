@@ -1,21 +1,24 @@
 import { useState } from 'react'
 
 const VotesLine = (props) => {
-  if (props.votes != 0) {
     return (
       <>
         <p>Has {props.votes} votes</p>
       </>
     )
-  }
 }
 
-const voteAnecdote = (anNumber) => {
-  console.log(votes, votes[anNumber])
-  votes[anNumber] += 1
-  console.log(votes, votes[anNumber])
-}
+const MostVotedAnecdote = (props) => {
 
+  return (
+    <>
+      <h1>Anecdote with most votes</h1>
+      <p>{props.anecdote}</p>
+      <VotesLine votes={props.votes} />
+    </>
+  )
+
+}
 
 const App = () => {
   const anecdotes = [
@@ -30,26 +33,47 @@ const App = () => {
   ]
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
+  const [mostVotedAn, setMostVotedAn] = useState({
+    anecdote: anecdotes[0],
+    score: votes[0]
+  })
 
-  // const votes = Array(anecdotes.length).fill(0)
   const nextAnecdoteHandler = () => {
     const num = Math.floor(Math.random() * anecdotes.length)
     setSelected(num)
   }
 
+  const mostVotedAnecdote = (anArr, votesArr) => {
+    let max = 0
+    let maxPos = 0
+    for (let pos = 0; pos < votesArr.length; pos++) {
+      if (votesArr[pos] > max) {
+        max = votesArr[pos]
+        maxPos = pos
+      }
+    }
+
+    return {
+      anecdote: anArr[maxPos],
+      score: votesArr[maxPos]
+    }
+  }
+
   const setVotesHandler = (votePos) => {
-    const copy = { ...votes }
+
+    const copy = [...votes]
     copy[votePos] += 1
+    setMostVotedAn(mostVotedAnecdote(anecdotes, copy))
     setVotes(copy)
   }
 
   return (
     <div>
-      
       <p>{anecdotes[selected]}</p>
       <VotesLine votes={votes[selected]} />
       <button onClick={() => setVotesHandler(selected)}>Vote</button>
       <button onClick={() => nextAnecdoteHandler()}>Next anecdote</button>
+      <MostVotedAnecdote anecdote={mostVotedAn.anecdote} votes={mostVotedAn.score} />
     </div>
   )
 }
