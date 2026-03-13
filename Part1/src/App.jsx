@@ -2,30 +2,48 @@ import { useState } from 'react'
 
 const Statistics = (props) => {
   const total = props.stats.good + props.stats.neutral + props.stats.bad
-  if(total == 0){
-    return(
+  if (total == 0) {
+    return (
       <>
         <p>No feedback given</p>
       </>
     )
-  }else {
+  } else {
     return (
       <>
         <h1>Statistics</h1>
-        <p>Good {props.stats.good}</p>
-        <p>Neutral {props.stats.neutral}</p>
-        <p>Bad {props.stats.bad}</p>
-        <p>All {total}</p>
-        <p>Average {total / 3}</p>
-        <p>Positive {props.stats.good / total}%</p>
+        <StatisticLine text="Good" value={props.stats.good} />
+        <StatisticLine text="Neutral" value={props.stats.neutral} />
+        <StatisticLine text="Bad" value={props.stats.bad} />
+        <StatisticLine text="All" value={total} />
+        <StatisticLine text="Average" value={total / 3} />
+        <StatisticLine text="Positive" value={props.stats.good / total} />
       </>
     )
-    
-  }
 
+  }
+}
+
+const StatisticLine = (props) => {
+  if (props.text == "Positive") {
+    return (
+      <p>{props.text} {props.value}%</p>
+    )
+  } else {
+    return (
+      <p>{props.text} {props.value}</p>
+    )
+  }
 
 }
 
+const Button = (props) => {
+  return (
+    <>
+      <button onClick={props.handler}>{props.text}</button>
+    </>
+  )
+}
 
 
 
@@ -33,14 +51,14 @@ const App = () => {
   const [goodReview, setGoodReview] = useState(0)
   const [neutralReview, seNeutralReview] = useState(0)
   const [badReview, setBadReview] = useState(0)
-  const buttonHandler = (review,reviewNum) => {
-    if(review == "Good"){
+  const buttonHandler = (review, reviewNum) => {
+    if (review == "Good") {
       const newReview = reviewNum + 1
       setGoodReview(newReview)
-    } else  if(review == "Neutral"){
+    } else if (review == "Neutral") {
       const newReview = reviewNum + 1
       seNeutralReview(newReview)
-    }else if(review == "Bad"){
+    } else if (review == "Bad") {
       const newReview = reviewNum + 1
       setBadReview(newReview)
     }
@@ -49,10 +67,10 @@ const App = () => {
   return (
     <div>
       <h1>Give feedback</h1>
-      <button onClick={() => buttonHandler("Good",goodReview)}>Good</button>
-      <button onClick={() => buttonHandler("Neutral",neutralReview)}>Neutral</button>
-      <button onClick={() => buttonHandler("Bad",badReview)}>Bad</button>
-      <Statistics stats={{good : goodReview, neutral : neutralReview, bad : badReview}}/>
+      <Button handler={() => buttonHandler("Good", goodReview)} text="Good" />
+      <Button handler={() => buttonHandler("Neutral", neutralReview)} text="Neutral" />
+      <Button handler={() => buttonHandler("Bad", badReview)} text="Bad" />
+      <Statistics stats={{ good: goodReview, neutral: neutralReview, bad: badReview }} />
     </div>
   )
 }
