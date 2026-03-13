@@ -1,10 +1,27 @@
 import { useState } from 'react'
 
+const Statistics = (props) => {
+  const total = props.stats.good + props.stats.neutral + props.stats.bad
+  return (
+    <>
+      <h1>Statistics</h1>
+      <p>Good {props.stats.good}</p>
+      <p>Neutral {props.stats.neutral}</p>
+      <p>Bad {props.stats.bad}</p>
+      <p>All {total}</p>
+      <p>Average {total / 3}</p>
+      <p>Positive {props.stats.good / total}%</p>
+    </>
+  )
+}
+
+
+
+
 const App = () => {
   const [goodReview, setGoodReview] = useState(0)
   const [neutralReview, seNeutralReview] = useState(0)
   const [badReview, setBadReview] = useState(0)
-  
   const buttonHandler = (review,reviewNum) => {
     if(review == "Good"){
       const newReview = reviewNum + 1
@@ -18,20 +35,13 @@ const App = () => {
     }
   }
 
-  const total = goodReview + neutralReview + badReview
   return (
     <div>
       <h1>Give feedback</h1>
       <button onClick={() => buttonHandler("Good",goodReview)}>Good</button>
       <button onClick={() => buttonHandler("Neutral",neutralReview)}>Neutral</button>
       <button onClick={() => buttonHandler("Bad",badReview)}>Bad</button>
-      <h1>Statistics</h1>
-      <p>Good {goodReview}</p>
-      <p>Neutral {neutralReview}</p>
-      <p>Bad {badReview}</p>
-      <p>All {total}</p>
-      <p>Average {total / 3}</p>
-      <p>Positive {goodReview * 100 / total}%</p>
+      <Statistics stats={{good : goodReview, neutral : neutralReview, bad : badReview}}/>
     </div>
   )
 }
