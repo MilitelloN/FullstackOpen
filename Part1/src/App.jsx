@@ -1,5 +1,22 @@
 import { useState } from 'react'
 
+const VotesLine = (props) => {
+  if (props.votes != 0) {
+    return (
+      <>
+        <p>Has {props.votes} votes</p>
+      </>
+    )
+  }
+}
+
+const voteAnecdote = (anNumber) => {
+  console.log(votes, votes[anNumber])
+  votes[anNumber] += 1
+  console.log(votes, votes[anNumber])
+}
+
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -12,11 +29,27 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
   const [selected, setSelected] = useState(0)
-  const num = Math.floor(Math.random() * anecdotes.length)
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
+
+  // const votes = Array(anecdotes.length).fill(0)
+  const nextAnecdoteHandler = () => {
+    const num = Math.floor(Math.random() * anecdotes.length)
+    setSelected(num)
+  }
+
+  const setVotesHandler = (votePos) => {
+    const copy = { ...votes }
+    copy[votePos] += 1
+    setVotes(copy)
+  }
+
   return (
     <div>
-      <p>{anecdotes[num]}</p>
-      <button onClick={() => setSelected(selected + 1)}>Next anecdote</button>
+      
+      <p>{anecdotes[selected]}</p>
+      <VotesLine votes={votes[selected]} />
+      <button onClick={() => setVotesHandler(selected)}>Vote</button>
+      <button onClick={() => nextAnecdoteHandler()}>Next anecdote</button>
     </div>
   )
 }
